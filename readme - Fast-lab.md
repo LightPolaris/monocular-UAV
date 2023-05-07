@@ -1,4 +1,4 @@
-<font size=6> **无人机搭建部分** </font>
+<font size=6> **从零制作自主空中机器人** </font>
 
 本文档是视频教程[从零制作自主空中机器人](https://www.bilibili.com/video/BV1WZ4y167me?p=1)的配套文档,github链接为https://github.com/ZJU-FAST-Lab/Fast-Drone-250
 
@@ -28,6 +28,7 @@
   机器人本体相关配件及焊接用工具详见[purchase_list.xlsx](purchase_list.xlsx),对硬件选型有相关疑问请看 番外一：硬件选型
 ## 第三章：飞控的安装与接线
 * 一定要注意电调信号线顺序！！！
+  <img src="images\电机方向.jpg" alt="电机方向" style="zoom: 15%;" />
 * 飞控箭头与机头同向为正向，任意方向旋转90°的倍数也可以，后续可以在飞控设置内调整，推荐和视频内相同朝向摆放。
 * <font color="#dd0000">强烈推荐使用硅胶杜邦线，常规杜邦线线材过硬，容易出现接触不良。</font>
 * 5V稳压模块注意贴黑胶带绝缘，周围注意贴一圈厚的海绵胶带来防止飞机降落时损坏5V模块，也可以考虑把5V模块用扎带扎在机臂旁边
@@ -94,48 +95,48 @@
 ## 第七章：机载电脑的环境配置
 
 * ROS安装
-  * sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
-  * sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
-  * sudo apt update
-  * sudo apt install ros-noetic-desktop-full
-  * echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
+  * `sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'`
+  * `sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654`
+  * `sudo apt update`
+  * `sudo apt install ros-noetic-desktop-full`
+  * `echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc`
   * <font color="#dd0000">建议没有ROS基础的同学先去B站学习古月老师的ROS入门教程</font>
 * 测试ROS
   * 打开三个终端，分别输入
-  * roscore
-  * rosrun turtlesim turtlesim_node
-  * rosrun turtlesim turtle_teleop_key
+  * `roscore`
+  * `rosrun turtlesim turtlesim_node`
+  * `rosrun turtlesim turtle_teleop_key`
 * realsense驱动安装
-  * sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key  F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE || sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE
-  * sudo add-apt-repository "deb https://librealsense.intel.com/Debian/apt-repo $(lsb_release -cs) main" -u
-  * sudo apt-get install librealsense2-dkms
-  * sudo apt-get install librealsense2-utils
-  * sudo apt-get install librealsense2-dev
-  * sudo apt-get install librealsense2-dbg
-  * 测试：realsense-viewer
+  * `sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key  F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE || sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key  F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE`
+  * `sudo add-apt-repository "deb https://librealsense.intel.com/Debian/apt-repo $(lsb_release -cs) main" -u`
+  * `sudo apt-get install librealsense2-dkms`
+  * `sudo apt-get install librealsense2-utils`
+  * `sudo apt-get install librealsense2-dev`
+  * `sudo apt-get install librealsense2-dbg`
+  * 测试：`realsense-viewer`
   * <font color="#dd0000">注意测试时左上角显示的USB必须是3.x，如果是2.x，可能是USB线是2.0的，或者插在了2.0的USB口上（3.0的线和口都是蓝色的）</font>
 * 安装mavros
-  * sudo apt-get install ros-noetic-mavros
-  * cd /opt/ros/noetic/lib/mavros
-  * sudo ./install_geographiclib_datasets.sh
+  * `sudo apt-get install ros-noetic-mavros`
+  * `cd /opt/ros/noetic/lib/mavros`
+  * `sudo ./install_geographiclib_datasets.sh`
 * 安装ceres与glog与ddyanmic-reconfigure
   * 解压`3rd_party.zip`压缩包
   * 进入glog文件夹打开终端
-  * sudo bash./autogen.sh && sudo bash ./configure && make && sudo make install
-  * sudo apt-get install liblapack-dev libsuitesparse-dev libcxsparse3 libgflags-dev libgoogle-glog-dev libgtest-dev
+  * `./autogen.sh && ./configure && make && sudo make install`
+  * `sudo apt-get install liblapack-dev libsuitesparse-dev libcxsparse3.1.2 libgflags-dev libgoogle-glog-dev libgtest-dev`
   * 进入ceres文件夹打开终端
-  * mkdir build
-  * cd build
-  * cmake ..
-  * sudo make -j4
-  * sudo make install
-  * sudo apt-get install ros-noetic-ddynamic-reconfigure
+  * `mkdir build`
+  * `cd build`
+  * `cmake ..`
+  * `sudo make -j4`
+  * `sudo make install`
+  * `sudo apt-get install ros-noetic-ddynamic-reconfigure`
 * 下载ego-planner源码并编译
-  * git clone https://github.com/ZJU-FAST-Lab/Fast-Drone-250
-  * cd Fast-Drone-250
-  * catkin_make
-  * source devel/setup.bash
-  * roslaunch ego_planner single_run_in_sim.launch
+  * `git clone https://github.com/ZJU-FAST-Lab/Fast-Drone-250`
+  * `cd Fast-Drone-250`
+  * `catkin_make`
+  * `source devel/setup.bash`
+  * `roslaunch ego_planner single_run_in_sim.launch`
   * 在Rviz内按下键盘G键，再单击鼠标左键以点选无人机目标点
 
 ## 第八章：常用实验与调试软件的安装与使用
@@ -143,19 +144,19 @@
 * VScode：`sudo dpkg -i ***.deb`
 * Terminator：`sudo apt install terminator`
 * Plotjuggler：
-  * sudo apt install ros-noetic-plotjuggler
-  * 705
-  * rosrun plotjuggler plotjuggler
+  * `sudo apt install ros-noetic-plotjuggler`
+  * `sudo apt install ros-noetic-plotjuggler-ros`
+  * `rosrun plotjuggler plotjuggler`
 * Net-tools：
   * `sudo apt install net-tools`
   * `ifconfig`
 * ssh：
-  * sudo apt install openssh-server
+  * `sudo apt install openssh-server`
   * 在笔记本上：`ping 192.168.**.**`
-  * sudo gedit /etc/hosts
-  * 加上一行：192.168.**.** fast-drone
-  * ping fast-drone
-  * ssh fast-drone@fast-drone`(`ssh 用户名@别名`)
+  * `sudo gedit /etc/hosts`
+  * 加上一行：`192.168.**.** fast-drone`
+  * `ping fast-drone`
+  * `ssh fast-drone@fast-drone`(`ssh 用户名@别名`)
 
 ## 第九章：Ego-Planner代码框架与参数介绍
 * `src/planner/plan_manage/launch/single_run_in_exp.launch`下的：
@@ -171,8 +172,8 @@
   * `hover_percent`：修改为无人机的悬停油门，可以通过px4log查看，具体可以参考[文档](https://www.bookstack.cn/read/px4-user-guide/zh-log-flight_review.md) 如果你的无人机是和课程的一模一样的话，这项保持为0.3即可。如果更改了动力配置，或重量发生变化，或轴距发生变化，都请调整此项，否则自动起飞时会发生无法起飞或者超调严重的情况。
   * `gain/Kp,Kv`：即PID中的PI项，一般不用太大改动。如果发生超调，请适当调小。如果无人机响应较慢，请适当调大。
   * `rc_reverse`：这项使用乐迪AT9S的不用管。如果在第十一课的自动起飞中，发现飞机的飞行方向与摇杆方向相反，说明需要修改此项，把相反的通道对应的值改为true。其中throttle如果反了，实际实验中会比较危险，建议在起飞前就确认好，步骤为：
-    * roslaunch mavros px4.launch
-    * rostopic echo /mavros/rc/in
+    * `roslaunch mavros px4.launch`
+    * `rostopic echo /mavros/rc/in`
     * 打开遥控器，把遥控器油门从最低满满打到最高
     * 看echo出来的消息里哪项在缓慢变化（这项就是油门通道值），并观察它是不是由小变大
     * 如果是由小变大，则不需要修改throttle的rc_reverse，反之改为true
@@ -180,50 +181,50 @@
   
 ## 第十章：VINS的参数设置与外参标定
 * 检查飞控mavros连接正常
-  * ls /dev/tty*`，确认飞控的串口连接正常。一般是`/dev/ttyACM0`
-  * sudo chmod 777 /dev/ttyACM0，为串口附加权限
-  * roslaunch mavros px4.launch
-  * 30，**确认飞控传输的imu频率在200hz左右**
+  * `ls /dev/tty*`，确认飞控的串口连接正常。一般是`/dev/ttyACM0`
+  * `sudo chmod 777 /dev/ttyACM0`，为串口附加权限
+  * `roslaunch mavros px4.launch`
+  * `rostopic hz /mavros/imu/data_raw`，确认飞控传输的imu频率在200hz左右
 * 检查realsense驱动正常
-  * roslaunch realsense2_camera rs_camera.launch
-  * 进入远程桌面，rqt_image_view
+  * `roslaunch realsense2_camera rs_camera.launch`
+  * 进入远程桌面，`rqt_image_view`
   * 查看`/camera/infra1/image_rect_raw`,`/camera/infra2/image_rect_raw`,`/camera/depth/image_rect_raw`话题正常
 * VINS参数设置
   * 进入`realflight_modules/VINS_Fusion/config/`
   
-  * 驱动realsense后，rostopic echo /camera/infra1/camera_info`，把其中的K矩阵中的fx,fy,cx,cy填入`left.yaml`和`right.yaml`
+  * 驱动realsense后，`rostopic echo /camera/infra1/camera_info`，把其中的K矩阵中的fx,fy,cx,cy填入`left.yaml`和`right.yaml`
   
   * 在home目录创建`vins_output`文件夹(如果你的用户名不是fast-drone，需要修改config内的vins_out_path为你实际创建的文件夹的绝对路径)
   
   * 修改`fast-drone-250.yaml`的`body_T_cam0`和`body_T_cam1`的`data`矩阵的第四列为你的无人机上的相机相对于飞控的实际外参，单位为米，顺序为x/y/z，第四项是1，不用改
   
 * VINS外参精确自标定
-  * sh shfiles/rspx4.sh
-  * rostopic echo /vins_fusion/imu_propagate
+  * `sh shfiles/rspx4.sh`
+  * `rostopic echo /vins_fusion/imu_propagate`
   * 拿起飞机沿着场地<font color="#dd0000">尽量缓慢</font>地行走，场地内光照变化不要太大，灯光不要太暗，<font color="#dd0000">不要使用会频闪的光源</font>，尽量多放些杂物来增加VINS用于匹配的特征点
   * 把`vins_output/extrinsic_parameter.txt`里的内容替换到`fast-drone-250.yaml`的`body_T_cam0`和`body_T_cam1`
   * 重复上述操作直到走几圈后VINS的里程计数据偏差收敛到满意值（一般在0.3米内）
 * 建图模块验证
-  * sh shfiles/rspx4.sh
-  * roslaunch ego_planner single_run_in_exp.launch
-  * 进入远程桌面 ``
+  * `sh shfiles/rspx4.sh`
+  * `roslaunch ego_planner single_run_in_exp.launch`
+  * 进入远程桌面 `roslaunch ego_planner rviz.launch`
 
 ## 第十一章：Ego-Planner的实验
 * 自动起飞：
 
-  * sh shfiles/rspx4.sh
-  * rostopic echo /vins_fusion/imu_propagate
+  * `sh shfiles/rspx4.sh`
+  * `rostopic echo /vins_fusion/imu_propagate`
   * 拿起飞机进行缓慢的小范围晃动，放回原地后确认没有太大误差
   * 遥控器5通道拨到内侧，六通道拨到下侧，油门打到中位
-  * roslaunch px4ctrl run_ctrl.launch
-  * sh shfiles/takeoff.sh，如果飞机螺旋桨开始旋转，但无法起飞，说明`hover_percent`参数过小；如果飞机有明显飞过1米高，再下降的样子，说明`hover_percent`参数过大
+  * `roslaunch px4ctrl run_ctrl.launch`
+  * `sh shfiles/takeoff.sh`，如果飞机螺旋桨开始旋转，但无法起飞，说明`hover_percent`参数过小；如果飞机有明显飞过1米高，再下降的样子，说明`hover_percent`参数过大
   * 遥控器此时可以以类似大疆飞机的操作逻辑对无人机进行位置控制
   * 降落时把油门打到最低，等无人机降到地上后，把5通道拨到中间，左手杆打到左下角上锁
 * Ego-Planner实验
   * 自动起飞
-  * roslaunch ego_planner single_run_in_exp.launch
-  * sh shfiles/record.sh
-  * 进入远程桌面 roslaunch ego_planner rviz.launch
+  * `roslaunch ego_planner single_run_in_exp.launch`
+  * `sh shfiles/record.sh`
+  * 进入远程桌面 `roslaunch ego_planner rviz.launch`
   * 按下G键加鼠标左键点选目标点使无人机飞行
 * <font color="#dd0000">如果实验中遇到意外怎么办！！！</font>
   * `case 1`: VINS定位没有飘，但是规划不及时/建图不准确导致无人机规划出一条可能撞进障碍物的轨迹。如果飞手在飞机飞行过程中发现无人机可能会撞到障碍物，在撞上前把6通道拨回上侧，此时无人机会退出轨迹跟随模式，进入VINS悬停模式，在此时把无人机安全着陆即可
@@ -292,4 +293,4 @@
 	A: 可能原因是你的固件不支持这样修改，可以尝试在启动mavros后执行：
 	rosrun mavros mavcmd long 511 105 5000 0 0 0 0 0 & sleep 1;
 	rosrun mavros mavcmd long 511 31 5000 0 0 0 0 0 & sleep 1;
-
+	
